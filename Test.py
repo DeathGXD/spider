@@ -2,12 +2,50 @@
 
 from urllib import request
 import json
-#import requests
+import pymysql
+import requests
 import os
 
 def parse_url():
-    news_type = '{"news_type": [{"name": "推荐", "id": "BA8J7DG9wangning"},{"name": "军事", "id": "BAI67OGGwangning"},{"name": "公开课", "id": "DJFFJBSLlizhenzhen"},{"name": "社会", "id": "BCR1UC1Qwangning"},{"name": "国内", "id": "BD29LPUBwangning"},{"name": "国际", "id": "BD29MJTVwangning"}]}'
-
+    news_type = '{"news_type": [{"name": "推荐", "id": "BA8J7DG9wangning"},' + \
+                     '{"name": "军事", "id": "BAI67OGGwangning"},' + \
+					 '{"name": "公开课", "id": "DJFFJBSLlizhenzhen"},' + \
+					 '{"name": "社会", "id": "BCR1UC1Qwangning"},' + \
+					 '{"name": "国内", "id": "BD29LPUBwangning"},' + \
+					 '{"name": "国际", "id": "BD29MJTVwangning"},' + \
+					 '{"name": "历史", "id": "C275ML7Gwangning"},' + \
+                     '{"name": "娱乐", "id": "BA10TA81wangning"},' + \
+                     '{"name": "电视",  "id": "BD2A86BEwangning"},' + \
+                     '{"name": "电影", "id": "BD2A9LEIwangning"},' + \
+                     '{"name": "明星", "id": "BD2AB5L9wangning"},' + \
+                     '{"name": "音乐", "id": "BD2AC4LMwangning"},' + \
+                     '{"name":"影视歌", "id": "C2769L6Ewangning"},' + \
+                     '{"name": "独家", "id": "BAI5E21Owangning"},' + \
+                     '{"name": "轻松一刻", "id": "BD21K0DLwangning"},' + \
+                     '{"name":"旅游", "id": "BEO4GINLwangning"},' + \
+                     '{"name": "房产", "id": "BAI6MTODwangning"},' + \
+                     '{"name": "汽车", "id": "BA8DOPCSwangning"},' + \
+                     '{"name": "科技", "id": "BA8D4A3Rwangning"},' + \
+                     '{"name": "科学", "id": "D90S2KJMwangning"},' + \
+                     '{"name":"家居", "id": "BAI6P3NDwangning"},' + \
+                     '{"name": "手机", "id": "BAI6I0O5wangning"},' + \
+                     '{"name": "数码", "id": "BAI6JOD9wangning"},' + \
+                     '{"name": "家电", "id": "BD2CU0MCwangning"},' + \
+					 '{"name": "读书", "id": "BCGIKK4Vwangning"},' + \
+                     '{"name": "政务", "id": "BA8J7DG9wangning"},' + \
+					 '{"name": "财经", "id": "BA8EE5GMwangning"},' + \
+                     '{"name": "体育", "id": "BA8E6OEOwangning"},' + \
+                     '{"name": "商业",  "id": "BD2C24VCwangning"},' + \
+					 '{"name": "时尚", "id": "BA8F6ICNwangning"},' + \
+                     '{"name":"美容", "id": "BD2BFD4Pwangning"},' + \
+					 '{"name": "服饰", "id": "BDC4UI29wangning"},' + \
+					 '{"name": "艺术", "id": "C2763SNLwangning"},' + \
+                     '{"name": "教育", "id": "BA8FF5PRwangning"},' + \
+                     '{"name": "游戏", "id": "BAI6RHDKwangning"},' + \
+                     '{"name": "亲子", "id": "BEO4PONRwangning"},' + \
+                     '{"name": "健康", "id": "BDC4QSV3wangning"},' + \
+                     '{"name": "校园", "id": "BA8J7DG9wangning"},' + \
+                     '{"name": "公益", "id": "BA8J7DG9wangning"}]}'
     news = json.loads(news_type)
 
 
@@ -23,13 +61,13 @@ def parse_url():
         for i in range(0, 100, 10):
             url = 'https://3g.163.com/touch/reconstruct/article/list/%s/%d-10.html' % (data['id'], i)
           #  print(url)
-            request_data(url)
+            request_data(url, data['id'], data['name'])
 
 
 
 
 
-def request_data(url):
+def request_data(url=None, id=None, name=None):
     header = {
         'Accept-Charset': 'UTF-8',
         'Accept': '*/*',
@@ -47,9 +85,22 @@ def request_data(url):
     res = request.urlopen(rq)
     respoen = res.read()
     result = str(respoen, encoding="utf-8")[9:-1]
-    cl = json.loads(result)
+    news_data = json.loads(result)
 
-    print(cl)
+    # print(len(cl[id]))
+
+    for i in range(0, len(news_data[id]), 1):
+        newdata = news_data[id][i]
+
+        newdata['new_type'] = name
+
+        # new = "{'new_type':'%s'," % name
+        # st = str(newdata)[1:]
+        #
+        # n = new + st
+        if newdata['digest'] != "" and newdata['digest'] != "#" and newdata['url'] != "" and newdata['url'] != None and len(newdata['url']) < 60:
+            print(newdata)
+            # print(news_data[id][i]['digest'])
 
 
 
