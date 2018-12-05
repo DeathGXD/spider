@@ -14,7 +14,7 @@ class Handler(BaseHandler):
     crawl_config = {
     }
 
-    @every(minutes=30)
+    @every(minutes=1 * 60)
     def on_start(self):
         self.conn = pymysql.connect(host="47.101.146.57", port=2018, user="root", password="Liuku!!!111",
                                     db="dm_report", charset='utf8')
@@ -27,7 +27,9 @@ class Handler(BaseHandler):
             self.conn.close()
             print("数据库链接已关闭！")
 
-    @config(age=2 * 30)
+        self.on_start(self)
+
+    @config(age=2 * 1 * 60 * 60)
     def index_page(self, response):
         news_type = '{"news_type": [{"name": "推荐", "id": "BA8J7DG9wangning"},' + \
                     '{"name": "军事", "id": "BAI67OGGwangning"},' + \
