@@ -43,15 +43,15 @@ class Handler(BaseHandler):
                     '{"name": "电影", "id": "BD2A9LEIwangning"},' + \
                     '{"name": "明星", "id": "BD2AB5L9wangning"},' + \
                     '{"name": "音乐", "id": "BD2AC4LMwangning"},' + \
-                    '{"name":"影视歌", "id": "C2769L6Ewangning"},' + \
+                    '{"name": "影视歌", "id": "C2769L6Ewangning"},' + \
                     '{"name": "独家", "id": "BAI5E21Owangning"},' + \
                     '{"name": "轻松一刻", "id": "BD21K0DLwangning"},' + \
-                    '{"name":"旅游", "id": "BEO4GINLwangning"},' + \
+                    '{"name": "旅游", "id": "BEO4GINLwangning"},' + \
                     '{"name": "房产", "id": "BAI6MTODwangning"},' + \
                     '{"name": "汽车", "id": "BA8DOPCSwangning"},' + \
                     '{"name": "科技", "id": "BA8D4A3Rwangning"},' + \
                     '{"name": "科学", "id": "D90S2KJMwangning"},' + \
-                    '{"name":"家居", "id": "BAI6P3NDwangning"},' + \
+                    '{"name": "家居", "id": "BAI6P3NDwangning"},' + \
                     '{"name": "手机", "id": "BAI6I0O5wangning"},' + \
                     '{"name": "数码", "id": "BAI6JOD9wangning"},' + \
                     '{"name": "家电", "id": "BD2CU0MCwangning"},' + \
@@ -61,7 +61,7 @@ class Handler(BaseHandler):
                     '{"name": "体育", "id": "BA8E6OEOwangning"},' + \
                     '{"name": "商业",  "id": "BD2C24VCwangning"},' + \
                     '{"name": "时尚", "id": "BA8F6ICNwangning"},' + \
-                    '{"name":"美容", "id": "BD2BFD4Pwangning"},' + \
+                    '{"name": "美容", "id": "BD2BFD4Pwangning"},' + \
                     '{"name": "服饰", "id": "BDC4UI29wangning"},' + \
                     '{"name": "艺术", "id": "C2763SNLwangning"},' + \
                     '{"name": "教育", "id": "BA8FF5PRwangning"},' + \
