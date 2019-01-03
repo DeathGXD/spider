@@ -98,8 +98,11 @@ def request_data(url=None, id=None, name=None):
         # st = str(newdata)[1:]
         #
         # n = new + st
-        if newdata['digest'] != "" and newdata['digest'] != "#" and newdata['url'] != "" and newdata['url'] != None and len(newdata['url']) < 60:
-            print(newdata)
+#        if newdata['hasImg'] != 1:
+        print(newdata)
+
+ #       if newdata['digest'] != "" and newdata['digest'] != "#" and newdata['url'] != "" and newdata['url'] != None and len(newdata['url']) < 60:
+ #           print(newdata)
             # print(news_data[id][i]['digest'])
 
 
