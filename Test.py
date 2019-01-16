@@ -47,9 +47,6 @@ def parse_url():
                      '{"name": "校园", "id": "BA8J7DG9wangning"},' + \
                      '{"name": "公益", "id": "BA8J7DG9wangning"}]}'
     news = json.loads(news_type)
-
-
-
 #    print(len(news['news_type']))
 #    print(news['news_type'][1]['name'])
 
@@ -58,13 +55,10 @@ def parse_url():
       #  print(data['name'])
       #  print(data['id'])
 
-        for i in range(0, 100, 10):
+        for i in range(0, 20, 1):
             url = 'https://3g.163.com/touch/reconstruct/article/list/%s/%d-10.html' % (data['id'], i)
-          #  print(url)
-            request_data(url, data['id'], data['name'])
-
-
-
+            print(url)
+            # request_data(url, data['id'], data['name'])
 
 
 def request_data(url=None, id=None, name=None):
@@ -86,8 +80,6 @@ def request_data(url=None, id=None, name=None):
     respoen = res.read()
     result = str(respoen, encoding="utf-8")[9:-1]
     news_data = json.loads(result)
-
-    # print(len(cl[id]))
 
     for i in range(0, len(news_data[id]), 1):
         newdata = news_data[id][i]

@@ -24,7 +24,7 @@ class Handler(BaseHandler):
         }
     }
 
-    @every(seconds=3 * 60)
+    @every(seconds=5)
     def on_start(self):
         self.conn = pymysql.connect(host="47.101.146.57", port=2018, user="root", password="Liuku!!!111",
                                     db="dm_report", charset='utf8')
@@ -33,12 +33,10 @@ class Handler(BaseHandler):
         self.crawl('https://3g.163.com/touch/news/', callback=self.index_page, connect_timeout=10, timeout=30,
                    retries=0, auto_recrawl=False, headers=self.crawl_config["header"])
 
-    @config(age=3 * 60)
+    @config(age=2 * 5)
     def index_page(self, response):
         news_type = '{"news_type": [{"name": "推荐", "id": "BA8J7DG9wangning"},' + \
                     '{"name": "军事", "id": "BAI67OGGwangning"},' + \
-                    '{"name": "公开课", "id": "DJFFJBSLlizhenzhen"},' + \
-                    '{"name": "社会", "id": "BCR1UC1Qwangning"},' + \
                     '{"name": "国内", "id": "BD29LPUBwangning"},' + \
                     '{"name": "国际", "id": "BD29MJTVwangning"},' + \
                     '{"name": "历史", "id": "C275ML7Gwangning"},' + \
@@ -47,37 +45,29 @@ class Handler(BaseHandler):
                     '{"name": "电影", "id": "BD2A9LEIwangning"},' + \
                     '{"name": "明星", "id": "BD2AB5L9wangning"},' + \
                     '{"name": "音乐", "id": "BD2AC4LMwangning"},' + \
-                    '{"name": "影视歌", "id": "C2769L6Ewangning"},' + \
+                    '{"name":"影视歌", "id": "C2769L6Ewangning"},' + \
                     '{"name": "独家", "id": "BAI5E21Owangning"},' + \
                     '{"name": "轻松一刻", "id": "BD21K0DLwangning"},' + \
-                    '{"name": "旅游", "id": "BEO4GINLwangning"},' + \
-                    '{"name": "房产", "id": "BAI6MTODwangning"},' + \
+                    '{"name":"旅游", "id": "BEO4GINLwangning"},' + \
                     '{"name": "汽车", "id": "BA8DOPCSwangning"},' + \
                     '{"name": "科技", "id": "BA8D4A3Rwangning"},' + \
                     '{"name": "科学", "id": "D90S2KJMwangning"},' + \
-                    '{"name": "家居", "id": "BAI6P3NDwangning"},' + \
                     '{"name": "手机", "id": "BAI6I0O5wangning"},' + \
                     '{"name": "数码", "id": "BAI6JOD9wangning"},' + \
-                    '{"name": "家电", "id": "BD2CU0MCwangning"},' + \
-                    '{"name": "读书", "id": "BCGIKK4Vwangning"},' + \
                     '{"name": "政务", "id": "BA8J7DG9wangning"},' + \
                     '{"name": "财经", "id": "BA8EE5GMwangning"},' + \
                     '{"name": "体育", "id": "BA8E6OEOwangning"},' + \
                     '{"name": "商业",  "id": "BD2C24VCwangning"},' + \
                     '{"name": "时尚", "id": "BA8F6ICNwangning"},' + \
-                    '{"name": "美容", "id": "BD2BFD4Pwangning"},' + \
-                    '{"name": "服饰", "id": "BDC4UI29wangning"},' + \
-                    '{"name": "艺术", "id": "C2763SNLwangning"},' + \
                     '{"name": "教育", "id": "BA8FF5PRwangning"},' + \
                     '{"name": "游戏", "id": "BAI6RHDKwangning"},' + \
                     '{"name": "亲子", "id": "BEO4PONRwangning"},' + \
                     '{"name": "健康", "id": "BDC4QSV3wangning"},' + \
-                    '{"name": "校园", "id": "BA8J7DG9wangning"},' + \
-                    '{"name": "公益", "id": "BA8J7DG9wangning"}]}'
+                    '{"name": "校园", "id": "BA8J7DG9wangning"}]}'
         news = json.loads(news_type)
 
         for data in news['news_type']:
-            for i in range(0, 50, 10):
+            for i in range(0, 10, 1):
                 url = 'https://3g.163.com/touch/reconstruct/article/list/%s/%d-10.html' % (data['id'], i)
                 self.request_data(url, data['id'], data['name'])
 
@@ -94,6 +84,7 @@ class Handler(BaseHandler):
             newdata = news_data[id][i]
 
             newdata['new_type'] = typename
+            newdata['tag'] = id
 
             if newdata['title'] != "" and newdata['digest'] != "" and newdata['digest'] != "#" and newdata[
                 'url'] != "" and newdata['url'] != None and len(newdata['url']) < 60:
@@ -101,6 +92,18 @@ class Handler(BaseHandler):
 
     @config(priority=2)
     def detail_page(self, response):
+
+        imageurl = ''
+        count = 0
+
+        for img in response.doc('.content a').items():
+            imgurl = img.attr('href')
+            if count < 3 and not imgurl.endswith('html'):
+                imageurl = imgurl + ',' + imageurl
+                count = count + 1
+
+        if count < 3:
+            imageurl = response.save['imgsrc']
 
         return {
             "url": response.save['url'],
@@ -110,9 +113,10 @@ class Handler(BaseHandler):
             "from_source": response.save['source'],
             "author": response.doc('.editor').text(),
             "news_type": response.save['new_type'],
-            "image_url": response.save['imgsrc'],
+            "image_url": imageurl,
             "digest": response.save['digest'],
             "commentCount": response.save['commentCount'],
+            "tag": response.save['tag'],
         }
 
     def on_result(self, result):
@@ -130,16 +134,18 @@ class Handler(BaseHandler):
         row = cursor.execute('''select id from toutiao_news where url='{}';'''.format(result['url']))
 
         if row == 0:
-            sql = '''insert into toutiao_news(title,news_time,url,from_source,author,news_type,digest,contents,commentCount,image_url,check_status) values ('{}','{}','{}','{}','{}','{}','{}', '{}','{}','{}','{}');'''.format(
+            sql = '''insert into toutiao_news(title,news_time,url,from_source,author,news_type,digest,contents,commentCount,image_url,check_status,tag) values ('{}','{}','{}','{}','{}','{}','{}', '{}','{}','{}','{}','{}');'''.format(
                 result['title'].replace(chr(39), "\\'"), result['news_time'], result['url'], result['from_source'],
                 result['author'], result['news_type'], result['digest'], result['content'].replace(chr(39), "\\'"),
-                result['commentCount'], result['image_url'], '0')
+                result['commentCount'], result['image_url'], '0', result['tag'])
 
             cursor.execute(sql)
             self.conn.commit()
 
         cursor.close()
         print("数据保存成功")
+
+
 
 
 
