@@ -30,8 +30,9 @@ class Handler(BaseHandler):
                                     db="dm_report", charset='utf8')
         self.conn.autocommit = True
         print("已打开数据库链接")
-        self.crawl('https://3g.163.com/touch/news/', callback=self.index_page, connect_timeout=10, timeout=30,
-                   retries=0, auto_recrawl=False, headers=self.crawl_config["header"])
+        # self.crawl('https://3g.163.com/touch/news/', callback=self.index_page, connect_timeout=10, timeout=30,
+        #            retries=0, auto_recrawl=False, headers=self.crawl_config["header"])
+        self.index_page
 
     @config(age=2 * 5)
     def index_page(self, response):
@@ -144,6 +145,9 @@ class Handler(BaseHandler):
 
         cursor.close()
         print("数据保存成功")
+
+if __name__ == '__main__':
+    Handler.on_start
 
 
 
