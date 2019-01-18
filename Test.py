@@ -5,6 +5,7 @@ import json
 import pymysql
 import requests
 import os
+from pyquery import PyQuery
 
 def parse_url():
     news_type = '{"news_type": [{"name": "推荐", "id": "BA8J7DG9wangning"},' + \

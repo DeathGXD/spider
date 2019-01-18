@@ -111,7 +111,7 @@ def request_data(url=None, id=None, name=None):
         print("抓取数据错误")
 
 def on_result(result=None):
-    
+
     try:
         conn = pymysql.connect(host="47.101.146.57", port=2018, user="root", password="Liuku!!!111",
                                     db="dm_report", charset='utf8')
