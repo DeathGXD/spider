@@ -10,15 +10,53 @@ import traceback
 
 
 def parse_url():
-    news_type = '{"news_type": [{"name": "推荐", "id": "BA8J7DG9wangning"}]}'
+    news_type = '{"news_type": [{"name": "军事", "id": "BAI67OGGwangning"},' + \
+					 '{"name": "公开课", "id": "DJFFJBSLlizhenzhen"},' + \
+					 '{"name": "社会", "id": "BCR1UC1Qwangning"},' + \
+					 '{"name": "国内", "id": "BD29LPUBwangning"},' + \
+					 '{"name": "国际", "id": "BD29MJTVwangning"},' + \
+					 '{"name": "历史", "id": "C275ML7Gwangning"},' + \
+                     '{"name": "娱乐", "id": "BA10TA81wangning"},' + \
+                     '{"name": "电视",  "id": "BD2A86BEwangning"},' + \
+                     '{"name": "电影", "id": "BD2A9LEIwangning"},' + \
+                     '{"name": "明星", "id": "BD2AB5L9wangning"},' + \
+                     '{"name": "音乐", "id": "BD2AC4LMwangning"},' + \
+                     '{"name":"影视歌", "id": "C2769L6Ewangning"},' + \
+                     '{"name": "独家", "id": "BAI5E21Owangning"},' + \
+                     '{"name": "轻松一刻", "id": "BD21K0DLwangning"},' + \
+                     '{"name":"旅游", "id": "BEO4GINLwangning"},' + \
+                     '{"name": "房产", "id": "BAI6MTODwangning"},' + \
+                     '{"name": "汽车", "id": "BA8DOPCSwangning"},' + \
+                     '{"name": "科技", "id": "BA8D4A3Rwangning"},' + \
+                     '{"name": "科学", "id": "D90S2KJMwangning"},' + \
+                     '{"name":"家居", "id": "BAI6P3NDwangning"},' + \
+                     '{"name": "手机", "id": "BAI6I0O5wangning"},' + \
+                     '{"name": "数码", "id": "BAI6JOD9wangning"},' + \
+                     '{"name": "家电", "id": "BD2CU0MCwangning"},' + \
+					 '{"name": "读书", "id": "BCGIKK4Vwangning"},' + \
+                     '{"name": "政务", "id": "BA8J7DG9wangning"},' + \
+					 '{"name": "财经", "id": "BA8EE5GMwangning"},' + \
+                     '{"name": "体育", "id": "BA8E6OEOwangning"},' + \
+                     '{"name": "商业",  "id": "BD2C24VCwangning"},' + \
+					 '{"name": "时尚", "id": "BA8F6ICNwangning"},' + \
+                     '{"name":"美容", "id": "BD2BFD4Pwangning"},' + \
+					 '{"name": "服饰", "id": "BDC4UI29wangning"},' + \
+					 '{"name": "艺术", "id": "C2763SNLwangning"},' + \
+                     '{"name": "教育", "id": "BA8FF5PRwangning"},' + \
+                     '{"name": "游戏", "id": "BAI6RHDKwangning"},' + \
+                     '{"name": "亲子", "id": "BEO4PONRwangning"},' + \
+                     '{"name": "健康", "id": "BDC4QSV3wangning"},' + \
+                     '{"name": "校园", "id": "BA8J7DG9wangning"},' + \
+                     '{"name": "公益", "id": "BA8J7DG9wangning"}]}'
     news = json.loads(news_type)
 
     for data in news['news_type']:
 
-        for i in range(0, 100, 1):
-            url = 'https://3g.163.com/touch/reconstruct/article/list/%s/%d-10.html' % (data['id'], i)
-            # print(url)
-            request_data(url, data['id'], data['name'])
+        for i in range(0, 31, 1):
+            for j in range(1, 21, 1):
+                url = 'https://3g.163.com/touch/reconstruct/article/list/%s/%d-%d.html' % (data['id'], i, j)
+                print(url)
+                request_data(url, data['id'], data['name'])
 
 
 def request_data(url=None, id=None, name=None):
@@ -48,7 +86,7 @@ def request_data(url=None, id=None, name=None):
             newdata['new_id'] = id
 
             if newdata['digest'] != "" and newdata['digest'] != "#" and newdata['url'] != "" and newdata['url'] != None and len(newdata['url']) < 60 and newdata['imgsrc'] != "":
-
+                print(newdata['url'])
                 html = requests.get(newdata['url']).text
 
                 soup = BeautifulSoup(html, "html.parser")
@@ -74,7 +112,7 @@ def request_data(url=None, id=None, name=None):
         print("抓取数据错误")
 
 def on_result(result=None):
-    print(result)
+
     try:
         conn = pymysql.connect(host="47.101.146.57", port=2018, user="root", password="Liuku!!!111",
                                     db="dm_report", charset='utf8')
