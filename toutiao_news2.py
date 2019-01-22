@@ -11,14 +11,15 @@ from requests.packages.urllib3.exceptions import InsecureRequestWarning
 import pandas as pd
 import pymysql
 import traceback
-
+from bs4 import BeautifulSoup
+from selenium import webdriver
+from selenium.webdriver.firefox.options import Options
 
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)  ###禁止提醒SSL警告
 
-
 def ttapi(url):  ####APP模式
     channel = re.search('ch/(.*?)/', url).group(1)
-    print(channel)
+    # print(channel)
     s = requests.session()
     headers = {
         'Accept': 'image/webp,image/*;q=0.8',
@@ -56,7 +57,7 @@ def ttapi(url):  ####APP模式
         }
         url = 'http://is.snssdk.com/api/news/feed/v51/'
         app = s.get(url=url, params=params, verify=False).json()
-        print(app)
+        # print(app)
         t2 = t - 10
         total_number = app['total_number']
         # print(total_number)
@@ -110,6 +111,19 @@ def ttapi(url):  ####APP模式
                 user_verified = content['user_info']['user_verified']  ###是否官方账号
             except:
                 user_verified = ''
+
+            try:
+                display_url = content['display_url']
+
+                # options = webdriver.FirefoxOptions()
+                options = Options()
+                options.add_argument('-headless')
+                driver = webdriver.Firefox(options=options)
+                driver.get(display_url)
+
+                print(driver.page_source)
+            except:
+                display_url=''
 
             nowtime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
             df.loc[x] = [abstract, title, keywords, read_count, share_count, ban_comment,
