@@ -4,11 +4,8 @@
 import requests
 import re
 import json
-import math
-import random
 import time
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
-import pandas as pd
 import pymysql
 import traceback
 from bs4 import BeautifulSoup
@@ -27,14 +24,10 @@ def ttapi(url):  ####APP模式
         'Accept-Language': 'zh-cn'
     }
     s.headers.update(headers)
-    df = pd.DataFrame(columns=(
-        'abstract 简报', 'title 标题', 'keywords 关键词', 'read_count 阅读量', 'share_count 分享数量',
-        'ban_comment 可评论', 'publish_time 推送时间', 'share_url url 链接', 'user_info_name 用户名',
-        'user_id 用户 id', 'description 用户描述', 'user_verified 官方账号', 'time 抓取时间', 'category 频道'
-    ))
+
     t2 = int(time.time()) - 500
-    x = 0
-    for i in range(10):  ###爬取页数
+
+    for i in range(20):  ###爬取页数
         time.sleep(3)
         t = int(time.time())
         params = {
@@ -57,81 +50,91 @@ def ttapi(url):  ####APP模式
         }
         url = 'http://is.snssdk.com/api/news/feed/v51/'
         app = s.get(url=url, params=params, verify=False).json()
-        # print(app)
+        print(app)
+
         t2 = t - 10
         total_number = app['total_number']
-        # print(total_number)
+
         for j in range(0, total_number):
             content = json.loads(app['data'][j]['content'])
+
             try:
                 abstract = content['abstract']  ##简报
+
             except:
                 abstract = ''
             try:
                 title = content['title']  ##标题
+                # result['title'] = title
             except:
                 title = ''
+
             try:
-                keywords = content['keywords']  ##关键词
+                comment_count = content['comment_count']  ##评论数
+                # result['commentCount'] = comment_count
             except:
-                keywords = ''
+                comment_count = ''
+
             try:
-                read_count = content['read_count']  ##阅读量
-            except:
-                read_count = ''
-            try:
-                share_count = content['share_count']  ##分享数量
-            except:
-                share_count = ''
-            try:
-                ban_comment = content['ban_comment']  ###是否可以评论，0为可评论，1不可评论
-            except:
-                ban_comment = ''
+                images = content['image_list']
+                imgsrc = ''
+                for img in images:
+                    imgsrc = imgsrc + img['url'] + ','
+                content['imgsrc'] = imgsrc
+            except KeyError:
+                content['imgsrc'] = ''
+
             try:
                 publish_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(content['publish_time']))  ##推送时间
+                # result['news_time'] = publish_time
             except:
                 publish_time = ''
+
             try:
-                share_url = content['share_url']  ###分享 url 链接
+                source = content['source']  ###新闻来源
+                # result['source'] = source
             except:
-                share_url = ''
+                source = ''
             try:
-                user_info_name = content['user_info']['name']  ##用户名
+                user_info_name = content['user_info']['name']  ##作者名称
+                # result['author'] = user_info_name
             except:
                 user_info_name = ''
-            try:
-                user_id = content['user_info']['user_id']  ##用户 id
-            except:
-                user_id = ''
-            try:
-                description = content['user_info']['description']  ##用户描述
-            except:
-                description = ''
-            try:
-                user_verified = content['user_info']['user_verified']  ###是否官方账号
-            except:
-                user_verified = ''
 
             try:
-                display_url = content['display_url']
+                url = content['display_url']
 
-                # options = webdriver.FirefoxOptions()
-                options = Options()
-                options.add_argument('-headless')
-                driver = webdriver.Firefox(options=options)
-                driver.get(display_url)
-
-                print(driver.page_source)
+                # options = Options()
+                # options.add_argument('-headless')
+                # driver = webdriver.Firefox(executable_path='D:\geckodriver\geckodriver.exe', options=options)
+                # driver.get(url)
+                # source = driver.page_source
+                #
+                # soup = BeautifulSoup(source, "html.parser")
             except:
-                display_url=''
+                content['content'] = ''
 
-            nowtime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-            df.loc[x] = [abstract, title, keywords, read_count, share_count, ban_comment,
-                         publish_time, share_url, user_info_name, user_id, description,
-                         user_verified, nowtime, channel]
-            x = x + 1
+            try:
+                tag = content['tag']
+            except:
+                tag = ''
 
-    df.to_csv('tt.csv', index=False, encoding="GB18030")
+            try:
+                news_id = content['tag_id']
+            except:
+                news_id = ''
+
+            content['channel'] = channel
+            # print(content['display_url'])
+            # print(content['content'])
+            # print(content['imgsrc'])
+            print(content['tag'])
+            print(content['tag_id'])
+            print(content['user_info']['name'])
+
+            # if content['content'] != '':
+            #     on_result(content)
+
     s.close()
 
 
@@ -165,6 +168,6 @@ def on_result(result=None):
         conn.close()
 
 if __name__ == '__main__':
-    # url = 'https://www.toutiao.com/ch/news_tech/'
-    url = 'https://www.toutiao.com/ch/selected/'
+    url = 'https://www.toutiao.com/ch/news_entertainment/'
+    # url = 'https://www.toutiao.com/ch/selected/'
     ttapi(url)
