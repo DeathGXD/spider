@@ -1,11 +1,13 @@
 #!/usr/bin/python3
 #!coding=utf-8
 
-
+import requests
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 from bs4 import BeautifulSoup
 import json
+import time
+from urllib import request
 
 
 def jsonParse():
@@ -15,23 +17,51 @@ def jsonParse():
 
     print(len(content['image_list']))
 
-    imgsrc = ''
-    for img in content['image_list']:
-        imgsrc = imgsrc + img['url'] + ','
+    if('video_detail_info' in content):
+        print("you")
+    else:
+        print("mei")
 
-    print(imgsrc)
+    # imgsrc = ''
+    # for img in content['image_list']:
+    #     imgsrc = imgsrc + img['url'] + ','
+    #
+    # print(imgsrc)
 
 def htmlParse():
+
+    mobile_emulation = {"deviceName": "iPhone X"}
     options = Options()
     options.add_argument('-headless')
-    driver = webdriver.Firefox(executable_path='D:\geckodriver\geckodriver.exe', options=options)
-    driver.get("http://toutiao.com/group/6630691620238918152/")
-    source = driver.page_source
+    options.add_argument(
+        'user-agent=Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Mobile Safari/537.36')
+    # options.set_capability("deviceName", "iPhone 6")
 
+    driver = webdriver.Firefox(executable_path='D:\geckodriver\geckodriver.exe', options=options)
+    driver.get("https://m.toutiao.com/i6650068596946895367/")
+    source = driver.page_source
+    print(source)
     soup = BeautifulSoup(source, "html.parser")
-    divs = soup.find_all(class_='article-content')[0]
+    divs = soup.find_all(id_='article_content')
     print(divs)
 
+
+def requestTime():
+    t2 = int(time.time()) - 2000
+    t = int(time.time())
+    print(int(t / 1000) * 1000)
+
+    print(t2)
+
+
+def r2(t=None):
+    print(t)
+    t = int(time.time())
+    print(t)
+
 if __name__ == '__main__':
+    # https: // www.toutiao.com / api / pc / feed /
+    
     htmlParse()
     # jsonParse()
+    # requestTime()

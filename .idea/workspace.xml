@@ -2,23 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8367f1b4-5f64-4264-966f-0709e5ae7916" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/163news/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/test2.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/toutiao/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/util/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/toutiao/toutiao_news_re.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/163.json" beforeDir="false" afterPath="$PROJECT_DIR$/163news/163.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/163_news.py" beforeDir="false" afterPath="$PROJECT_DIR$/163news/163_news.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/163_news_re.py" beforeDir="false" afterPath="$PROJECT_DIR$/163news/163_news_re.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/163spider.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Test.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/test.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/geckodriver.log" beforeDir="false" afterPath="$PROJECT_DIR$/geckodriver.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ghostdriver.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mysqlUtils.py" beforeDir="false" afterPath="$PROJECT_DIR$/util/mysqlUtils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/news.py" beforeDir="false" afterPath="$PROJECT_DIR$/163news/news.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/toutiao_news.py" beforeDir="false" afterPath="$PROJECT_DIR$/toutiao/toutiao_news.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/toutiao_news2.py" beforeDir="false" afterPath="$PROJECT_DIR$/toutiao/toutiao_news2.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tt.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/geckodriver.log" beforeDir="false" afterPath="$PROJECT_DIR$/test/geckodriver.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/test2.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/test2.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/toutiao/toutiao_news.py" beforeDir="false" afterPath="$PROJECT_DIR$/toutiao/toutiao_news.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/toutiao/toutiao_news2.py" beforeDir="false" afterPath="$PROJECT_DIR$/toutiao/toutiao_news2.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -28,15 +18,15 @@
   </component>
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/spider$toutiao_news.coverage" NAME="toutiao_news Coverage Results" MODIFIED="1548037399688" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/spider$test2__1_.coverage" NAME="test2 (1) Coverage Results" MODIFIED="1548235784287" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test" />
+    <SUITE FILE_PATH="coverage/spider$test2__1_.coverage" NAME="test2 (1) Coverage Results" MODIFIED="1548405366478" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test" />
     <SUITE FILE_PATH="coverage/spider$toutiao_news2__1_.coverage" NAME="toutiao_news2 (1) Coverage Results" MODIFIED="1548230029610" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/toutiao" />
-    <SUITE FILE_PATH="coverage/spider$toutiao_news2.coverage" NAME="toutiao_news2 Coverage Results" MODIFIED="1548236376882" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/spider$toutiao_news2.coverage" NAME="toutiao_news2 Coverage Results" MODIFIED="1548408324026" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/spider$toutiao_news_re.coverage" NAME="toutiao_news_re Coverage Results" MODIFIED="1548033776682" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/spider$Test2.coverage" NAME="Test2 Coverage Results" MODIFIED="1543822369778" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/spider$Test.coverage" NAME="Test Coverage Results" MODIFIED="1547020622340" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/spider$toutiao_news__1_.coverage" NAME="toutiao_news (1) Coverage Results" MODIFIED="1548037278839" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/spider$news.coverage" NAME="news Coverage Results" MODIFIED="1547701363505" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/spider$test2.coverage" NAME="test2 Coverage Results" MODIFIED="1548232902678" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/spider$test2.coverage" NAME="test2 Coverage Results" MODIFIED="1548407540845" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="DatabaseView">
     <option name="SHOW_INTERMEDIATE" value="true" />
@@ -60,29 +50,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/toutiao/toutiao_news.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2109">
-              <caret line="111" column="55" selection-start-line="111" selection-start-column="47" selection-end-line="111" selection-end-column="55" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/163news/163_news_re.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1634">
-              <caret line="91" column="87" selection-start-line="91" selection-start-column="80" selection-end-line="91" selection-end-column="87" />
-              <folding>
-                <element signature="e#46#72#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/toutiao/toutiao_news2.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="932">
-              <caret line="132" column="46" selection-start-line="132" selection-start-column="46" selection-end-line="132" selection-end-column="46" />
+            <state relative-caret-position="3002">
+              <caret line="167" selection-start-line="167" selection-end-line="167" />
               <folding>
                 <element signature="e#35#50#0" expanded="true" />
               </folding>
@@ -91,13 +60,46 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/163news/163_news.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="76">
+              <caret line="64" column="12" lean-forward="true" selection-start-line="64" selection-start-column="12" selection-end-line="64" selection-end-column="38" />
+              <folding>
+                <element signature="e#46#72#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/toutiao/toutiao_news_re.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-439">
+              <caret line="38" lean-forward="true" selection-start-line="38" selection-end-line="38" />
+              <folding>
+                <element signature="e#35#50#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/test/test2.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="380">
-              <caret line="23" column="16" selection-start-line="23" selection-start-column="16" selection-end-line="23" selection-end-column="16" />
+            <state relative-caret-position="381">
+              <caret line="63" column="4" lean-forward="true" selection-start-line="63" selection-start-column="4" selection-end-line="63" selection-end-column="4" />
               <folding>
-                <element signature="e#36#66#0" expanded="true" />
+                <element signature="e#35#50#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://D:/Program Files/Python37/Lib/site-packages/selenium/webdriver/firefox/options.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="177">
+              <caret line="43" column="13" selection-start-line="43" selection-start-column="13" selection-end-line="43" selection-end-column="13" />
             </state>
           </provider>
         </entry>
@@ -124,6 +126,7 @@
       <find>article-content</find>
       <find>http://p1-tt.bytecdn.cn/list/300x196/dfic-imagehandler/f9b7f730-1734-4e37-9784-ff5769eaa465.webp</find>
       <find>tag</find>
+      <find>，</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -144,8 +147,10 @@
         <option value="$PROJECT_DIR$/mysqlUtils.py" />
         <option value="$PROJECT_DIR$/test2.py" />
         <option value="$PROJECT_DIR$/toutiao_news2.py" />
-        <option value="$PROJECT_DIR$/test/test2.py" />
         <option value="$PROJECT_DIR$/toutiao/toutiao_news2.py" />
+        <option value="$PROJECT_DIR$/toutiao/toutiao_news.py" />
+        <option value="$PROJECT_DIR$/toutiao/toutiao_news_re.py" />
+        <option value="$PROJECT_DIR$/test/test2.py" />
       </list>
     </option>
   </component>
@@ -256,7 +261,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="D:\Death\GitHub\spider\toutiao\toutiao_news2.py" />
+      <option name="SCRIPT_NAME" value="D:\Death\GitHub\spider\toutiao\toutiao_news_re.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -298,12 +303,12 @@
       <workItem from="1548033014511" duration="20928000" />
       <workItem from="1548141601960" duration="20009000" />
       <workItem from="1548231433909" duration="5677000" />
-      <workItem from="1548295158044" duration="787000" />
+      <workItem from="1548295158044" duration="34048000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="142429000" />
+    <option name="totallyTimeSpent" value="175690000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -315,7 +320,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="7" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24581431" />
@@ -323,7 +328,7 @@
       <window_info id="Favorites" order="2" show_stripe_button="false" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32881355" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.45254236" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.42542374" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -387,16 +392,6 @@
     <entry file="file://$PROJECT_DIR$/geckodriver.log">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/163news/163_news.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="171">
-          <caret line="55" column="28" selection-start-line="55" selection-start-column="28" selection-end-line="55" selection-end-column="28" />
-          <folding>
-            <element signature="e#46#72#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/ghostdriver.log" />
     <entry file="file://$PROJECT_DIR$/163news/news.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -409,16 +404,9 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/163news/163spider.py" />
-    <entry file="file://$PROJECT_DIR$/toutiao/toutiao_news.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2109">
-          <caret line="111" column="55" selection-start-line="111" selection-start-column="47" selection-end-line="111" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/163news/163_news_re.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1634">
+        <state relative-caret-position="1729">
           <caret line="91" column="87" selection-start-line="91" selection-start-column="80" selection-end-line="91" selection-end-column="87" />
           <folding>
             <element signature="e#46#72#0" expanded="true" />
@@ -426,20 +414,61 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/test2.py">
+    <entry file="file://$USER_HOME$/.PyCharm2018.3/system/python_stubs/959216962/builtins.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="380">
-          <caret line="23" column="16" selection-start-line="23" selection-start-column="16" selection-end-line="23" selection-end-column="16" />
-          <folding>
-            <element signature="e#36#66#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="281">
+          <caret line="3633" column="33" selection-start-line="3633" selection-start-column="23" selection-end-line="3633" selection-end-column="33" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/toutiao/toutiao_news2.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="932">
-          <caret line="132" column="46" selection-start-line="132" selection-start-column="46" selection-end-line="132" selection-end-column="46" />
+        <state relative-caret-position="190">
+          <caret line="111" column="55" selection-start-line="111" selection-start-column="47" selection-end-line="111" selection-end-column="55" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://D:/Program Files/Python37/Lib/site-packages/selenium/webdriver/firefox/options.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="177">
+          <caret line="43" column="13" selection-start-line="43" selection-start-column="13" selection-end-line="43" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/toutiao/toutiao_news.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3002">
+          <caret line="167" selection-start-line="167" selection-end-line="167" />
+          <folding>
+            <element signature="e#35#50#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/163news/163_news.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="76">
+          <caret line="64" column="12" lean-forward="true" selection-start-line="64" selection-start-column="12" selection-end-line="64" selection-end-column="38" />
+          <folding>
+            <element signature="e#46#72#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/toutiao/toutiao_news_re.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-439">
+          <caret line="38" lean-forward="true" selection-start-line="38" selection-end-line="38" />
+          <folding>
+            <element signature="e#35#50#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/test2.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="381">
+          <caret line="63" column="4" lean-forward="true" selection-start-line="63" selection-start-column="4" selection-end-line="63" selection-end-column="4" />
           <folding>
             <element signature="e#35#50#0" expanded="true" />
           </folding>

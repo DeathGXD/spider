@@ -1,173 +1,124 @@
-#!/usr/bin/python3
-#!coding=utf-8
+"""
+APP爬虫：
+一般APP端的爬虫要比网页端简单一些，所以遇到网页端数据较难爬取时，可以考虑从APP端入手。
+国家信息公示系统：
+    网页端：js加密，需要动态获取cookie，__jsl__；
+    APP端：不需要任何js解密，直接发送一个请求就可以获取到数据；
+今日头条：
+    网页端：js加密，as/cp/_signature，其中_signature破解较为麻烦；
+    APP端：js加密，只需要as/cp两个参数(每次都更新)，_signature参数就不是必须要携带的；
+"""
+import time, requests, hashlib, json
 
-import requests
-import re
-import json
-import time
-from requests.packages.urllib3.exceptions import InsecureRequestWarning
-import pymysql
-import traceback
-from bs4 import BeautifulSoup
-from selenium import webdriver
-from selenium.webdriver.firefox.options import Options
 
-requests.packages.urllib3.disable_warnings(InsecureRequestWarning)  ###禁止提醒SSL警告
-
-def ttapi(url):  ####APP模式
-    channel = re.search('ch/(.*?)/', url).group(1)
-    # print(channel)
-    s = requests.session()
-    headers = {
-        'Accept': 'image/webp,image/*;q=0.8',
-        'User-Agent': 'News/6.9.8.36 CFNetwork/975.0.3 Darwin/18.2.0',
-        'Accept-Language': 'zh-cn'
-    }
-    s.headers.update(headers)
-
-    t2 = int(time.time()) - 500
-
-    for i in range(20):  ###爬取页数
-        time.sleep(3)
-        t = int(time.time())
-        params = {
-            'category': channel,  ###频道名
-            'refer': '1',  ###???，固定值1
-            'count': '20',  ####返回数量，默认为20
-            'min_behot_time': t2,  ####上次请求时间的时间戳，例:1491981025
-            'last_refresh_sub_entrance_interval': t - 10,  #####本次请求时间的时间戳，例:1491981165
-            'loc_time': int(t / 1000) * 1000,  ###本地时间
-            'latitude': '',  ###经度
-            'longitude': '',  ###纬度
-            'city': '',  ###当前城市
-            'iid': '1234876543',  ###某个唯一 id，长度为10
-            'device_id': '42433242851',  ###设备id，长度为11
-            'abflag': '3',
-            'ssmix': 'a',
-            'language': 'zh',
-            'openudid': '1b8d5bf69dc4a561',  ####某个唯一id，长度为16
-
+def get_as_cp():
+    """
+    手机端：
+        function r() {
+            var e = Math.floor((new Date).getTime() / 1e3)
+              , t = e.toString(16).toUpperCase()
+              , n = o(e).toString().toUpperCase();
+            if (8 !== t.length)
+                return {
+                    as: "479BB4B7254C150",
+                    cp: "7E0AC8874BB0985"
+                };
+            for (var r = n.slice(0, 5), i = n.slice(-5), a = "", s = 0; s < 5; s++)
+                a += r[s] + t[s];
+            for (var u = "", l = 0; l < 5; l++)
+                u += t[l + 3] + i[l];
+            return {
+                as: "A1" + a + t.slice(-3),
+                cp: t.slice(0, 3) + u + "E1"
+            }
         }
-        url = 'http://is.snssdk.com/api/news/feed/v51/'
-        app = s.get(url=url, params=params, verify=False).json()
-        print(app)
+    网页端：
+        e.getHoney = function() {
+            var t = Math.floor((new Date).getTime() / 1e3)
+              , e = t.toString(16).toUpperCase()
+              , i = md5(t).toString().toUpperCase();
+            if (8 != e.length)
+                return {
+                    as: "479BB4B7254C150",
+                    cp: "7E0AC8874BB0985"
+                };
+            for (var n = i.slice(0, 5), a = i.slice(-5), s = "", o = 0; 5 > o; o++)
+                s += n[o] + e[o];
+            for (var r = "", c = 0; 5 > c; c++)
+                r += e[c + 3] + a[c];
+            return {
+                as: "A1" + s + e.slice(-3),
+                cp: e.slice(0, 3) + r + "E1"
+            }
+        }
+    :return:
+    """
 
-        t2 = t - 10
-        total_number = app['total_number']
+    # 1. 先得到一个整数的时间戳，round()是对小数进行四舍五入，得到一个整数
+    t = round(time.time())
+    # 2. 将这个整数类型的时间戳，转化为十六进制的字符串，并且将字符串全部转化为大写
+    # hex()内置函数，用于将一个整数转化为16进制的字符串，对应的是js中的toString(16)
+    e = hex(t).upper().replace('0X', '')
+    # 3. 经过分析发现：i = md5(t).toString().toUpperCase();比n = o(e).toString().toUpperCase();简单。
+    md = hashlib.md5()
+    # 注意：update的参数一定是一个字节类型(bytes)的数据
+    md.update(str(t).encode('utf8'))
+    i = md.hexdigest().upper()
+    # 4. 判断条件
+    if len(e) != 8:
+        return {
+            "as": "479BB4B7254C150",
+            "cp": "7E0AC8874BB0985"
+        }
+    # 5. 还原这两个for循环
+    """
+    i = F74F9D099F994027DDFFEAA29C92323B
+    slice(0, 5)等价于python中的 [0:5] 切片操作
+    var n = i.slice(0, 5);
+    var a = i.slice(-5);
+    var s = "";
+    var r = "";
 
-        for j in range(0, total_number):
-            content = json.loads(app['data'][j]['content'])
+    for (var o = 0; 5 > o; o++)
+        s += n[o] + e[o];
+    for (var c = 0; 5 > c; c++)
+        r += e[c + 3] + a[c];
+    return {
+        as: "A1" + s + e.slice(-3),
+        cp: e.slice(0, 3) + r + "E1"
+    }
+    """
+    # 从i这个字符串的前面切5个字符得到n，再从后面切5个得到a。
+    n = i[0:5]
+    a = i[-5:]
+    s = ""
+    r = ""
 
-            try:
-                abstract = content['abstract']  ##简报
+    for num in range(5):
+        s += n[num] + e[num]
 
-            except:
-                abstract = ''
-            try:
-                title = content['title']  ##标题
-                # result['title'] = title
-            except:
-                title = ''
-
-            try:
-                comment_count = content['comment_count']  ##评论数
-                # result['commentCount'] = comment_count
-            except:
-                comment_count = ''
-
-            try:
-                images = content['image_list']
-                imgsrc = ''
-                for img in images:
-                    imgsrc = imgsrc + img['url'] + ','
-                content['imgsrc'] = imgsrc
-            except KeyError:
-                content['imgsrc'] = ''
-
-            try:
-                publish_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(content['publish_time']))  ##推送时间
-                # result['news_time'] = publish_time
-            except:
-                publish_time = ''
-
-            try:
-                source = content['source']  ###新闻来源
-                # result['source'] = source
-            except:
-                source = ''
-            try:
-                user_info_name = content['user_info']['name']  ##作者名称
-                # result['author'] = user_info_name
-            except:
-                user_info_name = ''
-
-            try:
-                url = content['display_url']
-
-                # options = Options()
-                # options.add_argument('-headless')
-                # driver = webdriver.Firefox(executable_path='D:\geckodriver\geckodriver.exe', options=options)
-                # driver.get(url)
-                # source = driver.page_source
-                #
-                # soup = BeautifulSoup(source, "html.parser")
-            except:
-                content['content'] = ''
-
-            try:
-                tag = content['tag']
-            except:
-                tag = ''
-
-            try:
-                news_id = content['tag_id']
-            except:
-                news_id = ''
-
-            content['channel'] = channel
-            # print(content['display_url'])
-            # print(content['content'])
-            # print(content['imgsrc'])
-            print(content['tag'])
-            print(content['tag_id'])
-            print(content['user_info']['name'])
-
-            # if content['content'] != '':
-            #     on_result(content)
-
-    s.close()
+    for num in range(5):
+        r += e[num + 3] + a[num]
+    return {
+        "as": "A1" + s + e[-3:],
+        "cp": e[0:3] + r + "E1"
+    }
 
 
-def on_result(result=None):
-    print(result)
-    try:
-        conn = pymysql.connect(host="47.101.146.57", port=2018, user="root", password="Liuku!!!111",
-                                    db="dm_report", charset='utf8')
-        conn.autocommit = True
+def get_list_json(data_dict):
+    t = round(time.time())
+    print(t)
+    # max_behot_time这个参数就是用来控制翻页的一个时间戳，每一页请求完以后，将最后一条数据的behot_time值获取出来作为下一次请求的参数即可。
+    api_url = 'https://m.toutiao.com/list/?tag=news_hot&ac=wap&count=20&format=json_raw&as={}&cp={}&max_behot_time={}&i={}'.format(
+        data_dict['as'], data_dict['cp'], t, t)
+    response = requests.get(api_url, headers={
+        'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1'})
+    if response.status_code == 200:
+        print(response.text)
+        print(json.loads(response.text))
+        print(len(json.loads(response.text)))
 
-        cursor = conn.cursor()
-
-        row = cursor.execute('''select id from toutiao_news_latest where url='{}';'''.format(result['url']))
-
-        if row == 0:
-
-            sql = '''insert into toutiao_news_test(title,news_time,url,from_source,author,news_type,digest,contents,commentCount,image_url,check_status,tag) values ('{}','{}','{}','{}','{}','{}','{}', '{}','{}','{}','{}','{}');'''.format(
-                result['title'].replace(chr(39), "\\'"), result['ptime'], result['url'], result['source'],
-                result['editor'], result['new_type'], result['digest'], result['content'].replace(chr(39), "\\'"),
-                result['commentCount'], result['imgsrc'], '0', result['new_id'])
-
-            cursor.execute(sql)
-            conn.commit()
-
-            print("数据保存成功")
-
-    except Exception as e:
-        traceback.print_exc()
-    finally:
-        cursor.close()
-        conn.close()
 
 if __name__ == '__main__':
-    url = 'https://www.toutiao.com/ch/news_entertainment/'
-    # url = 'https://www.toutiao.com/ch/selected/'
-    ttapi(url)
+    result = get_as_cp()
+    get_list_json(result)

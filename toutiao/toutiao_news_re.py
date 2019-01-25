@@ -16,25 +16,7 @@ requests.packages.urllib3.disable_warnings(InsecureRequestWarning)  ###禁止提
 
 
 def start():
-    news_type = '{"news_type":[{"type":"selected","name":"推荐","id":"BA8J7DG9wangning"},' + \
-                    '{"type":"news_entertainment","name":"娱乐","id":"BA10TA81wangning"},' + \
-                    '{"type":"news_hot","name":"热点","id":"BA10TA81toutiao"},' + \
-                    '{"type":"news_tech","name":"科技","id":"BA8D4A3Rwangning"},' + \
-                    '{"type":"news_game","name":"游戏","id":"BA9D4A3Rtoutiao"},' + \
-                    '{"type":"news_sports","name":"体育","id":"BA8E6OEOwangning"},' + \
-                    '{"type":"news_car","name":"汽车","id":"BA8DOPCSwangning"},' + \
-                    '{"type":"news_finance","name":"财经","id":"BA8EE5GMwangning"},' + \
-                    '{"type":"funny","name":"搞笑","id":"BD21K0DLtoutiao"},' + \
-                    '{"type":"news_military","name":"军事","id":"BAI67OGGwangning"},' + \
-                    '{"type":"news_world","name":"国际","id":"BD29MJTVwangning"},' + \
-                    '{"type":"news_fashion","name":"时尚","id":"BA8F6ICNwangning"},' + \
-                    '{"type":"news_travel","name":"旅游","id":"BEO4GINLwangning"},' + \
-                    '{"type":"news_baby","name":"亲子","id":"BEO4PONRwangning"},' + \
-                    '{"type":"news_discovery","name":"探索","id":"BEO4PONRtoutiao"},' + \
-                    '{"type":"news_regimen","name":"养生","id":"BAI6I0Otoutiao"},' + \
-                    '{"type":"news_essay","name":"美文","id":"BA09taitoutiao"},' + \
-                    '{"type":"news_history","name":"历史","id":"C275ML7Gwangning"},' + \
-                    '{"type":"news_food","name":"美食","id":"BDC4QSV3toutiao"}]}'
+    news_type = '{"news_type":[{"type":"selected","name":"推荐","id":"BA8J7DG9wangning"}]}'
 
     news = json.loads(news_type)
 
@@ -52,7 +34,7 @@ def request_data(url=None, name=None, id=None):  ####APP模式
         'Accept': 'image/webp,image/*;q=0.8',
         'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Mobile Safari/537.36',
         'Accept-Language': 'zh-cn'
-    }
+     }
     s.headers.update(headers)
 
     t2 = int(time.time()) - 2000
@@ -81,7 +63,7 @@ def request_data(url=None, name=None, id=None):  ####APP模式
 
         url = 'http://is.snssdk.com/api/news/feed/v51/'
         app = s.get(url=url, params=params, verify=False).json()
-
+        print(app)
         t2 = t - 10
         total_number = app['total_number']
 
@@ -104,11 +86,11 @@ def request_data(url=None, name=None, id=None):  ####APP模式
             try:
                 url = content['display_url']
 
-                driver.get(url)
-                source = driver.page_source
-
-                soup = BeautifulSoup(source, "html.parser")
-                content['content'] = str(soup.find_all(class_='article-content')[0])
+                # driver.get(url)
+                # source = driver.page_source
+                #
+                # soup = BeautifulSoup(source, "html.parser")
+                # content['content'] = str(soup.find_all(class_='article-content')[0])
             except:
                 content['content'] = ''
 
@@ -117,8 +99,8 @@ def request_data(url=None, name=None, id=None):  ####APP模式
             content['ptime'] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(content['publish_time']))
             content['editor'] = content['user_info']['name']
 
-            if content['content'] != '' and content['content'] is not None:
-                on_result(content)
+            # if content['content'] != '' and content['content'] is not None:
+            #     on_result(content)
 
     driver.quit()
     s.close()
@@ -130,6 +112,7 @@ def web_driver():
     options.add_argument(
         'user-agent=Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Mobile Safari/537.36')
     driver = webdriver.Firefox(executable_path='D:\geckodriver\geckodriver.exe', options=options)
+    # driver = webdriver.Firefox(options=options)
 
     return driver
 
