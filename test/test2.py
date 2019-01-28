@@ -59,9 +59,47 @@ def r2(t=None):
     t = int(time.time())
     print(t)
 
+def getData():
+    header = {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+                'Accept-Charset': 'UTF-8',
+                'Accept-Language': 'zh-CN,zh;q=0.9',
+                'Cache-Control': 'max-age=0',
+                'Connection': 'keep-alive',
+                'Cookie': 'csrftoken=186f69db19b65ffe788fe1caa7080e06; tt_webid=6613248121868895752; tt_webid=6613248121868895752; UM_distinctid=167302a28300-06596aa01a4775-75133b4f-100200-167302a28383d5; WEATHER_CITY=%E5%8C%97%E4%BA%AC; CNZZDATA1259612802=56902657-1542698355-https%253A%252F%252Fwww.baidu.com%252F%7C1543191469',
+                'Host': 'www.toutiao.com',
+                'Upgrade-Insecure-Requests': '1',
+                'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3554.0 Mobile Safari/537.36'
+              }
+
+    url='https://www.toutiao.com/api/pc/feed/?min_behot_time=0&category=__all__'
+    data = None
+    rq = request.Request(url, data=data, headers=header)
+    res = request.urlopen(rq)
+    respoen = res.read()
+    result = str(respoen, encoding="utf-8")
+    news_data = json.loads(result)
+    d = news_data['data']
+    print(d)
+    print(len(d))
+
+    for da in d:
+        print(da['abstract'])
+        print(da['tag'])
+        print(da['comments_count'])
+        print(da['tag_url'])
+        print(da['title'])
+        print(da['chinese_tag'])
+        print(da['source'])
+        print(da['image_url'])
+        print(da['source_url'])
+        print(da['item_id'])
+        print(da['behot_time'])
+
 if __name__ == '__main__':
+    print(len('/group/6647293254217761287/'))
     # https: // www.toutiao.com / api / pc / feed /
-    
-    htmlParse()
+
+    # htmlParse()
+    # getData()
     # jsonParse()
     # requestTime()

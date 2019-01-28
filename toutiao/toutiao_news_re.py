@@ -1,109 +1,91 @@
 #!/usr/bin/python3
-#!coding=utf-8
+# -*- encoding: utf-8 -*-
 
-import requests
-import re
+from urllib import request
 import json
 import time
-from requests.packages.urllib3.exceptions import InsecureRequestWarning
+import pymysql
+from bs4 import BeautifulSoup
+import requests
+import traceback
 import pymysql
 import traceback
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 
-requests.packages.urllib3.disable_warnings(InsecureRequestWarning)  ###禁止提醒SSL警告
-
 
 def start():
-    news_type = '{"news_type":[{"type":"selected","name":"推荐","id":"BA8J7DG9wangning"}]}'
+    news_type = '{"news_type":[{"type":"__all__","name":"推荐","id":"BA8J7DG9wangning"},' + \
+                '{"type":"news_hot","name":"推荐","id":"BA8J7DG9wangning"}]}'
 
     news = json.loads(news_type)
 
     for data in news['news_type']:
-        url = 'https://www.toutiao.com/ch/%s/' % data['type']
+        url = 'https://www.toutiao.com/api/pc/feed/?min_behot_time=0&category=%s' % data['type']
         print(url)
         request_data(url, data['name'], data['id'])
 
 
-def request_data(url=None, name=None, id=None):  ####APP模式
+def request_data(url=None, name=None, id=None):
     driver = web_driver()
-    channel = re.search('ch/(.*?)/', url).group(1)
-    s = requests.session()
-    headers = {
-        'Accept': 'image/webp,image/*;q=0.8',
-        'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Mobile Safari/537.36',
-        'Accept-Language': 'zh-cn'
-     }
-    s.headers.update(headers)
 
-    t2 = int(time.time()) - 2000
+    try:
+        header = {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+                  'Accept-Charset': 'UTF-8',
+                  'Accept-Language': 'zh-CN,zh;q=0.9',
+                  'Cache-Control': 'max-age=0',
+                  'Connection': 'keep-alive',
+                  'Cookie': 'csrftoken=186f69db19b65ffe788fe1caa7080e06; tt_webid=6613248121868895752; tt_webid=6613248121868895752; UM_distinctid=167302a28300-06596aa01a4775-75133b4f-100200-167302a28383d5; WEATHER_CITY=%E5%8C%97%E4%BA%AC; CNZZDATA1259612802=56902657-1542698355-https%253A%252F%252Fwww.baidu.com%252F%7C1543191469',
+                  'Host': 'www.toutiao.com',
+                  'Upgrade-Insecure-Requests': '1',
+                  'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3554.0 Mobile Safari/537.36'
+                  }
 
-    for i in range(20):  ###爬取页数
-        time.sleep(3)
-        t = int(time.time())
-        params = {
-            'category': channel,  ###频道名
-            'refer': '1',  ###???，固定值1
-            'count': '20',  ####返回数量，默认为20
-            'min_behot_time': t2,  ####上次请求时间的时间戳，例:1491981025
-            'last_refresh_sub_entrance_interval': t - 10,  #####本次请求时间的时间戳，例:1491981165
-            'loc_time': int(t / 1000) * 1000,  ###本地时间
-            'latitude': '',  ###经度
-            'longitude': '',  ###纬度
-            'city': '',  ###当前城市
-            'iid': '1234876543',  ###某个唯一 id，长度为10
-            'device_id': '42433242851',  ###设备id，长度为11
-            'abflag': '3',
-            'ssmix': 'a',
-            'language': 'zh',
-            'openudid': '1b8d5bf69dc4a561',  ####某个唯一id，长度为16
+        data = None
 
-        }
+        rq = request.Request(url, data=data, headers=header)
+        res = request.urlopen(rq)
+        respoen = res.read()
+        result = str(respoen, encoding="utf-8")
+        news_data = json.loads(result)['data']
 
-        url = 'http://is.snssdk.com/api/news/feed/v51/'
-        app = s.get(url=url, params=params, verify=False).json()
-        print(app)
-        t2 = t - 10
-        total_number = app['total_number']
+        for news in news_data:
+            url = news['source_url']
 
-        for j in range(0, total_number):
+            url = 'https://toutiao.com' + url
+            print(url)
+            driver.get(url)
+            source = driver.page_source
 
-            content = json.loads(app['data'][j]['content'])
+            soup = BeautifulSoup(source, "html.parser")
+            if len(soup.find_all(class_='article-content')) != 0:
+                news['content'] = str(soup.find_all(class_='article-content')[0])
+                news['source_url'] = url
 
-            if ('video_detail_info' in content):
+                images = ''
+                if 'image_list' in news:
+                    for image in news['image_list']:
+                        img = 'https:' + image['url']
+                        images = images + img + ','
+                elif 'middle_image' in news:
+                    images = news['middle_image']
+
+                if 'comments_count' not in news:
+                    news['comments_count'] = 0
+
+                news['imgsrc'] = images
+                news['ptime'] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(news['behot_time']))
+                news['news_type'] = name
+                news['news_id'] = id
+
+                on_result(news)
+            else:
                 continue
 
-            try:
-                images = content['image_list']
-                imgsrc = ''
-                for img in images:
-                    imgsrc = imgsrc + img['url'][:-5] + ','
-                content['imgsrc'] = imgsrc
-            except KeyError:
-                content['imgsrc'] = ''
-
-            try:
-                url = content['display_url']
-
-                # driver.get(url)
-                # source = driver.page_source
-                #
-                # soup = BeautifulSoup(source, "html.parser")
-                # content['content'] = str(soup.find_all(class_='article-content')[0])
-            except:
-                content['content'] = ''
-
-            content['news_type'] = name
-            content['news_id'] = id
-            content['ptime'] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(content['publish_time']))
-            content['editor'] = content['user_info']['name']
-
-            # if content['content'] != '' and content['content'] is not None:
-            #     on_result(content)
-
-    driver.quit()
-    s.close()
+        driver.quit()
+    except traceback:
+        traceback.print_exc()
 
 
 def web_driver():
@@ -112,9 +94,9 @@ def web_driver():
     options.add_argument(
         'user-agent=Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Mobile Safari/537.36')
     driver = webdriver.Firefox(executable_path='D:\geckodriver\geckodriver.exe', options=options)
-    # driver = webdriver.Firefox(options=options)
 
     return driver
+
 
 def on_result(result=None):
 
@@ -125,14 +107,15 @@ def on_result(result=None):
 
         cursor = conn.cursor()
 
-        row = cursor.execute('''select id from toutiao_news_latest where url='{}';'''.format(result['display_url']))
+        row = cursor.execute('''select id from toutiao_news where url='{}';'''.format(result['source_url']))
 
         if row == 0:
 
-            sql = '''insert into toutiao_news(title,news_time,url,from_source,author,news_type,digest,contents,commentCount,image_url,check_status,tag,news_id) values ({}','{}','{}','{}','{}','{}','{}', '{}','{}','{}','{}','{}','{}');'''.format(
-                result['title'].replace(chr(39), "\\'"), result['ptime'], result['display_url'], result['source'],
-                result['editor'], result['news_type'], result['abstract'].replace(chr(39), "\\'"), result['content'].replace(chr(39), "\\'"),
-                result['comment_count'], result['imgsrc'], '0', result['news_id'],result['tag_id'])
+            sql = '''insert into toutiao_news(title,news_time,url,from_source,author,news_type,digest,contents,commentCount,image_url,check_status,tag,news_id) values ('{}','{}','{}','{}','{}','{}','{}', '{}','{}','{}','{}','{}','{}');'''.format(
+                result['title'].replace(chr(39), "\\'"), result['ptime'], result['source_url'], result['source'],
+                result['source'], result['news_type'], result['abstract'].replace(chr(39), "\\'"), result['content'].replace(chr(39), "\\'"),
+                result['comments_count'], result['imgsrc'], '0', result['news_id'],result['item_id'])
+            # print(sql)
 
             cursor.execute(sql)
             conn.commit()
@@ -144,7 +127,17 @@ def on_result(result=None):
         cursor.close()
         conn.close()
 
+
 if __name__ == '__main__':
     while True:
         start()
+
+
+
+
+
+
+
+
+
 
