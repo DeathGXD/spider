@@ -41,7 +41,6 @@ def start():
         print(url)
         request_data(url, data['name'], data['id'])
 
-
 def request_data(url=None, name=None, id=None):
     driver = web_driver()
 
@@ -64,45 +63,46 @@ def request_data(url=None, name=None, id=None):
         res = request.urlopen(rq)
         respoen = res.read()
         result = str(respoen, encoding="utf-8")
-        news_data = json.loads(result)['data']
+        news_data = json.loads(result)
 
-        for news in news_data:
-            url = news['source_url']
+        if 'data' in news_data:
+            for news in news_data:
+                url = news['source_url']
 
-            # if len(url) > 27:
-            #     continue
+                if len(url) > 30:
+                    continue
 
-            url = 'https://toutiao.com' + url
-            print(url)
-            driver.get(url)
-            source = driver.page_source
+                url = 'https://toutiao.com' + url
+                print(url)
+                driver.get(url)
+                source = driver.page_source
 
-            soup = BeautifulSoup(source, "html.parser")
-            if len(soup.find_all(class_='article-content')) != 0:
-                news['content'] = str(soup.find_all(class_='article-content')[0])
-                news['source_url'] = url
+                soup = BeautifulSoup(source, "html.parser")
+                if len(soup.find_all(class_='article-content')) != 0:
+                    news['content'] = str(soup.find_all(class_='article-content')[0])
+                    news['source_url'] = url
 
-                images = ''
-                if 'image_list' in news:
-                    for image in news['image_list']:
-                        img = 'https:' + image['url']
-                        images = images + img + ','
-                elif 'middle_image' in news:
-                    images = news['middle_image']
+                    images = ''
+                    if 'image_list' in news:
+                        for image in news['image_list']:
+                            img = 'https:' + image['url']
+                            images = images + img + ','
+                    elif 'middle_image' in news:
+                        images = news['middle_image']
 
-                if 'comments_count' not in news:
-                    news['comments_count'] = 0
+                    if 'comments_count' not in news:
+                        news['comments_count'] = 0
 
-                news['imgsrc'] = images
-                news['ptime'] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(news['behot_time']))
-                news['news_type'] = name
-                news['news_id'] = id
+                    news['imgsrc'] = images
+                    news['ptime'] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(news['behot_time']))
+                    news['news_type'] = name
+                    news['news_id'] = id
 
-                on_result(news)
-            else:
-                continue
+                    on_result(news)
+                else:
+                    continue
 
-        driver.quit()
+            driver.quit()
     except traceback:
         traceback.print_exc()
 

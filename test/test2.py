@@ -8,6 +8,8 @@ from bs4 import BeautifulSoup
 import json
 import time
 from urllib import request
+import urllib3
+
 
 
 def jsonParse():
@@ -95,11 +97,25 @@ def getData():
         print(da['item_id'])
         print(da['behot_time'])
 
+
+def getHtml():
+    # page = urllib3
+    # page = request.urlopen('https://www.toutiao.com/a6651506811981529612/')
+
+    # html = page.read().decode('utf-8')
+
+    print(page)
+
+    content = requests.get('https://www.toutiao.com/a6651506811981529612/')
+    print(content)
+
+
 if __name__ == '__main__':
-    print(len('/group/6647293254217761287/'))
+    # print(len('/group/6647293254217761287/'))
     # https: // www.toutiao.com / api / pc / feed /
 
     # htmlParse()
     # getData()
     # jsonParse()
     # requestTime()
+    getHtml()
