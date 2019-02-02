@@ -49,17 +49,11 @@ def htmlParse():
 
 
 def requestTime():
-    t2 = int(time.time()) - 2000
+    t2 = int(time.time()) -600
     t = int(time.time())
     print(int(t / 1000) * 1000)
 
     print(t2)
-
-
-def r2(t=None):
-    print(t)
-    t = int(time.time())
-    print(t)
 
 def getData():
     header = {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
@@ -100,7 +94,7 @@ def getData():
 
 def getHtml():
     # page = urllib3
-    # page = request.urlopen('https://www.toutiao.com/a6651506811981529612/')
+    page = request.urlopen('https://www.toutiao.com/a6651506811981529612/')
 
     # html = page.read().decode('utf-8')
 
@@ -117,5 +111,5 @@ if __name__ == '__main__':
     # htmlParse()
     # getData()
     # jsonParse()
-    # requestTime()
-    getHtml()
+    requestTime()
+    # getHtml()

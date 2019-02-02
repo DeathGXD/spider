@@ -16,13 +16,15 @@ from selenium.webdriver.firefox.options import Options
 
 
 def start():
+    t = int(time.time()) - 2000
+
     news_type = '{"news_type":[{"type":"__all__","name":"推荐","id":"BA8J7DG9wangning"},' + \
                 '{"type":"news_hot","name":"推荐","id":"BA8J7DG9wangning"}]}'
 
     news = json.loads(news_type)
 
     for data in news['news_type']:
-        url = 'https://www.toutiao.com/api/pc/feed/?min_behot_time=0&category=%s' % data['type']
+        url = 'https://www.toutiao.com/api/pc/feed/?min_behot_time=%d&category=%s' % (t, data['type'])
         print(url)
         request_data(url, data['name'], data['id'])
 
